@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur CLP Pro</title>
+    <style>
+        body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .box { max-width: 600px; width: 100%; background: #1e293b; padding: 20px; border-radius: 12px; }
+        h1 { text-align: center; color: #60a5fa; margin-top: 0; }
+        textarea { width: 100%; height: 100px; padding: 10px; background: #0b1120; border: 1px solid #334155; color: white; border-radius: 8px; font-size: 14px; resize: vertical; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; margin-top: 10px; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
+        button:disabled { background: #475569; }
+        .result { margin-top: 15px; text-align: center; min-height: 200px; background: #0b1120; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .result img { max-width: 100%; }
+        .load { display: none; color: #94a3b8; font-style: italic; }
+    </style>
+</head>
+<body>
+<div class="box">
+    <h1>🎬 Générateur CLP</h1>
+    <textarea id="p" placeholder="Décris ton image... (ex: cinematic product shot, 4k, clean background)"></textarea>
+    <button id="btn" onclick="gen()">✨ Générer</button>
+    <div class="result" id="res"><span class="load" id="ld">⏳ Génération...</span></div>
+</div>
+<script>
+    const APP = "clp-pro";
+    function gen() {
+        const v = document.getElementById('p').value.trim();
+        if(!v) return alert("Entre une description.");
+        document.getElementById('btn').disabled = true;
+        document.getElementById('ld').style.display = 'inline';
+        document.getElementById('res').innerHTML = '<span class="load" style="display:inline">⏳ Génération...</span>';
+        const seed = Math.floor(Math.random()*99999);
+        const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(v)}?width=1024&height=1024&nologo=true&seed=${seed}&app=${APP}`;
+        const img = new Image();
+        img.onload = () => {
+            document.getElementById('ld').style.display = 'none';
+            document.getElementById('res').innerHTML = '';
+            document.getElementById('res').appendChild(img);
+            document.getElementById('btn').disabled = false;
+        };
+        img.src = url;
+    }
+</script>
+</body>
+</html>
