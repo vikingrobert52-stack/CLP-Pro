@@ -19,9 +19,9 @@
 <body>
 <div class="box">
     <h1>🎬 Générateur CLP</h1>
-    <textarea id="p" placeholder="Décris ton image..."></textarea>
+    <textarea id="p" placeholder="Décris ton image... (ex: cinematic product shot, 4k, clean background)"></textarea>
     <button id="btn" onclick="gen()">✨ Générer</button>
-    <div class="result" id="res"><span class="load" id="ld">⏳ Génération...</span></div>
+    <div class="result" id="res"><span class="load" id="ld">⏳ Chargement...</span></div>
 </div>
 <script>
     function gen() {
@@ -34,9 +34,11 @@
         
         btn.disabled = true;
         ld.style.display = 'inline';
-        res.innerHTML = '<span class="load" style="display:inline">⏳ Génération...</span>';
+        res.innerHTML = '<span class="load" style="display:inline">⏳ Chargement...</span>';
         
-        const apiUrl = `/api/image?prompt=${encodeURIComponent(v)}`;
+        // Utilise Unsplash pour tester (Gratuit et immédiat)
+        // Quand Pollinations sera validé, on remettra l'URL de l'API
+        const apiUrl = `https://source.unsplash.com/1024x1024/?${encodeURIComponent(v)}`;
         
         const img = new Image();
         img.onload = () => {
