@@ -1,6 +1,7 @@
-// api/image.js
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   const prompt = req.query.prompt || 'cat';
+  
+  // Ta clé secrète est ici, personne ne peut la voir
   const API_KEY = "sk_E2cybCVFuQO6FDgIZMpHL4AeEcoxFdde";
 
   try {
@@ -13,18 +14,13 @@ module.exports = async (req, res) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
-    }
+    if (!response.ok) throw new Error('API Error');
 
-    // Récupère l'image et renvoie-la directement
-    const arrayBuffer = await response.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const buffer = await response.arrayBuffer();
     
     res.setHeader('Content-Type', 'image/jpeg');
-    res.status(200).send(buffer);
+    res.status(200).send(Buffer.from(buffer));
   } catch (error) {
-    console.error('Error:', error);
     res.status(500).json({ error: error.message });
   }
-};
+}
