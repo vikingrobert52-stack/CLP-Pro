@@ -38,7 +38,9 @@
         
         // Utilise Unsplash pour tester (Gratuit et immédiat)
         // Quand Pollinations sera validé, on remettra l'URL de l'API
-        const apiUrl = `https://source.unsplash.com/1024x1024/?${encodeURIComponent(v)}`;
+        const apiUrl = // Picsum - Photos aléatoires gratuites (pour tester l'interface)
+const randomSeed = Date.now(); // Pour avoir une image différente à chaque fois
+const apiUrl = `https://picsum.photos/1024/1024?random=${randomSeed}`;
         
         const img = new Image();
         img.onload = () => {
