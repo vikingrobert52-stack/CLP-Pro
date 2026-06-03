@@ -1,10 +1,6 @@
-import { NextResponse } from 'next/server';
-
-export async function GET(request) {
-  const { searchParams } = new URL(request.url);
-  const prompt = searchParams.get('prompt') || 'cat';
-  
-  // Ta clé API secrète (protégée ici, invisible pour le public)
+// api/image.js - Version Vercel Functions (sans Next.js)
+module.exports = async (req, res) => {
+  const prompt = req.query.prompt || 'cat';
   const API_KEY = "sk_E2cybCVFuQO6FDgIZMpHL4AeEcoxFdde";
 
   try {
@@ -21,12 +17,9 @@ export async function GET(request) {
 
     const buffer = await response.arrayBuffer();
     
-    return new NextResponse(buffer, {
-      headers: {
-        'Content-Type': 'image/jpeg',
-      },
-    });
+    res.setHeader('Content-Type', 'image/jpeg');
+    res.send(Buffer.from(buffer));
   } catch (error) {
-    return NextResponse.json({ error: 'Erreur génération' }, { status: 500 });
+    res.status(500).json({ error: 'Erreur génération' });
   }
-}
+};
