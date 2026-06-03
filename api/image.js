@@ -10,7 +10,7 @@ export default async function handler(req, res) {
     
     const response = await fetch(url, {
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'Authorization': API_KEY,
       },
     });
 
