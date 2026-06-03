@@ -19,28 +19,38 @@
 <body>
 <div class="box">
     <h1>🎬 Générateur CLP</h1>
-    <textarea id="p" placeholder="Décris ton image... (ex: cinematic product shot, 4k, clean background)"></textarea>
+    <textarea id="p" placeholder="Décris ton image..."></textarea>
     <button id="btn" onclick="gen()">✨ Générer</button>
     <div class="result" id="res"><span class="load" id="ld">⏳ Génération...</span></div>
 </div>
 <script>
-    const APP = "clp-pro";
     function gen() {
         const v = document.getElementById('p').value.trim();
         if(!v) return alert("Entre une description.");
-        document.getElementById('btn').disabled = true;
-        document.getElementById('ld').style.display = 'inline';
-        document.getElementById('res').innerHTML = '<span class="load" style="display:inline">⏳ Génération...</span>';
-        const seed = Math.floor(Math.random()*99999);
-        const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(v)}?width=1024&height=1024&nologo=true&seed=${seed}&app=${APP}`;
+        
+        const btn = document.getElementById('btn');
+        const ld = document.getElementById('ld');
+        const res = document.getElementById('res');
+        
+        btn.disabled = true;
+        ld.style.display = 'inline';
+        res.innerHTML = '<span class="load" style="display:inline">⏳ Génération...</span>';
+        
+        const apiUrl = `/api/image?prompt=${encodeURIComponent(v)}`;
+        
         const img = new Image();
         img.onload = () => {
-            document.getElementById('ld').style.display = 'none';
-            document.getElementById('res').innerHTML = '';
-            document.getElementById('res').appendChild(img);
-            document.getElementById('btn').disabled = false;
+            ld.style.display = 'none';
+            res.innerHTML = '';
+            res.appendChild(img);
+            btn.disabled = false;
         };
-        img.src = url;
+        img.onerror = () => {
+            ld.style.display = 'none';
+            res.innerHTML = '<p style="color:#ef4444;">Erreur. Réessaie.</p>';
+            btn.disabled = false;
+        };
+        img.src = apiUrl;
     }
 </script>
 </body>
