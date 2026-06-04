@@ -25,6 +25,9 @@
 </div>
 <script>
     function gen() {
+    alert("Test - Le bouton fonctionne !"); // ← Ajoute ça
+    const v = document.getElementById('p').value.trim();
+    // ... le reste {
         const v = document.getElementById('p').value.trim();
         if(!v) return alert("Entre une description.");
         
